@@ -1,0 +1,12 @@
+{
+  "name": "live-market-pulse",
+  "private": true,
+  "scripts": {
+    "lint": "oxlint client/src server/src",
+    "format": "oxfmt client/src server/src"
+  },
+  "devDependencies": {
+    "oxfmt": "^0.71.0",
+    "oxlint": "^1.86.0"
+  }
+}
