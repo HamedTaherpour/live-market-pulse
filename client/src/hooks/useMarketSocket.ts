@@ -51,6 +51,7 @@ export function useMarketSocket(): {
 } {
   const [tickers, setTickers] = useState<TickerMap>({});
   const [status, setStatus] = useState<ConnectionStatus>("connecting");
+  const [retryCount, setRetryCount] = useState(0);
 
   const socketRef = useRef<WebSocket | null>(null);
   const retryCountRef = useRef(0);
@@ -75,6 +76,7 @@ export function useMarketSocket(): {
       const base = Math.min(30_000, 1000 * 2 ** retryCountRef.current);
       const delay = base + Math.random() * 1000;
       retryCountRef.current += 1;
+      setRetryCount(retryCountRef.current);
 
       clearRetryTimeout();
       retryTimeoutRef.current = setTimeout(() => {
@@ -98,6 +100,7 @@ export function useMarketSocket(): {
           return;
         }
         retryCountRef.current = 0;
+        setRetryCount(0);
         setStatus("open");
       };
 
@@ -158,5 +161,5 @@ export function useMarketSocket(): {
     };
   }, []);
 
-  return { tickers, status, retryCount: retryCountRef.current };
+  return { tickers, status, retryCount };
 }
